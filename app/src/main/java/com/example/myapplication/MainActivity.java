@@ -2,7 +2,6 @@ package com.example.myapplication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -10,18 +9,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ActivityOptions;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawerLayout;
@@ -74,6 +70,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.notes:
                 startActivity(new Intent(this,MainActivity.class));
                 break;
+            case R.id.rating:
+                startActivity(new Intent(this,RatingPage.class));
+                break;
+            case R.id.share:
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/AnanduP03/Notes-App-Android-Studio")));
         }
         return false;
     }

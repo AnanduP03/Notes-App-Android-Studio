@@ -19,4 +19,7 @@
         <item name="android:windowEnterTransition">@transition/transition_anim</item>
         <item name="android:windowExitTransition">@transition/transition_anim</item>
     </style>
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlActivated">@color/whiteAlternate</item>
+    </style>
 </resources>
