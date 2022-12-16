@@ -9,6 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class newNotePage extends AppCompatActivity {
     private EditText heading,desc;
     DBHelper DB;
@@ -22,9 +26,10 @@ public class newNotePage extends AppCompatActivity {
             desc= findViewById(R.id.newPageDesc);
             save= findViewById(R.id.save);
             save.setOnClickListener(v -> {
+                String dateTime = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault()).format(new Date());
                 String headingText=heading.getText().toString();
                 String descText=desc.getText().toString();
-                Boolean checkInsertion=DB.insertNotes(headingText,descText);
+                Boolean checkInsertion=DB.insertNotes(headingText,descText,dateTime);
                 Intent intent=new Intent(getApplicationContext(),MainActivity.class);
                 Bundle b= ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
                 if(checkInsertion){

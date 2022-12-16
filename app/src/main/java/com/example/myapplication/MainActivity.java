@@ -1,7 +1,11 @@
 package com.example.myapplication;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,13 +14,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
+
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    DrawerLayout drawerLayout;
+    ActionBarDrawerToggle toggle;
+    NavigationView nav_view;
     RecyclerView recyclerView;
     DBHelper DB;
     CustomAdapter adapter;
@@ -26,10 +36,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar=findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawerLayout=findViewById(R.id.drawer);
+        nav_view=findViewById(R.id.nav_view);
+        toggle=new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.open,R.string.close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.setDrawerIndicatorEnabled(true);
+        toggle.syncState();
+        nav_view.setNavigationItemSelectedListener(this);
         btn= findViewById(R.id.add);
+        Bundle b=ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
         btn.setOnClickListener(v -> {
             Intent intent=new Intent(getApplicationContext(),newNotePage.class);
-            Bundle b=ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
             startActivity(intent,b);
         });
 
@@ -44,6 +63,19 @@ public class MainActivity extends AppCompatActivity {
         if(notes.length==0){
             Toast.makeText(this,"No Entry Exists",Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item){
+        switch (item.getItemId()){
+            case R.id.addNote:
+                startActivity(new Intent(this,newNotePage.class));
+                break;
+            case R.id.notes:
+                startActivity(new Intent(this,MainActivity.class));
+                break;
+        }
+        return false;
     }
 
 

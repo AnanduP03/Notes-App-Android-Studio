@@ -15,7 +15,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase DB) {
-        DB.execSQL("create Table NotesTable(id integer primary key autoincrement,heading TEXT,content TEXT)");
+        DB.execSQL("create Table NotesTable(id integer primary key autoincrement,heading TEXT,content TEXT,dateTime TEXT)");
     }
 
     @Override
@@ -23,11 +23,12 @@ public class DBHelper extends SQLiteOpenHelper {
         DB.execSQL("DROP Table if exists NotesTable");
     }
 
-    public Boolean insertNotes(String heading,String desc){
+    public Boolean insertNotes(String heading,String desc,String dateTime){
         SQLiteDatabase DB=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put("heading",heading);
         contentValues.put("content",desc);
+        contentValues.put("dateTime",dateTime);
         long result=DB.insert("NotesTable",null,contentValues);
         if(result == -1){
             return false;
@@ -42,12 +43,13 @@ public class DBHelper extends SQLiteOpenHelper {
         DB.delete("NotesTable","id=?",new String[]{String.valueOf(i)});
     }
 
-    public void updateNotes(int i,String heading,String desc){
+    public void updateNotes(int i,String heading,String desc,String dateTime){
         SQLiteDatabase DB=this.getWritableDatabase();
         ContentValues cv=new ContentValues();
         cv.put("id",i);
         cv.put("heading",heading);
         cv.put("content",desc);
+        cv.put("dateTime",dateTime);
         DB.update("NotesTable",cv,"id=?",new String[]{String.valueOf(i)});
     }
 
@@ -57,7 +59,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Note[] note=new Note[cursor.getCount()];
         int i=0;
         while(cursor.moveToNext()){
-            note[i]=new Note(cursor.getLong(0),cursor.getString(1),cursor.getString(2));
+            note[i]=new Note(cursor.getLong(0),cursor.getString(1),cursor.getString(2),cursor.getString(3));
             Log.v("DBHelper Note","ID: "+note[i].id);
             i++;
         }

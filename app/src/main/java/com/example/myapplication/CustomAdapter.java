@@ -19,7 +19,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-
+import java.util.Date;
 
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHolder> {
@@ -53,6 +53,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
         holder.Heading.setText(String.valueOf(note.heading));
         String descShrink=limitingLength(String.valueOf(notes[position].desc));
         holder.Desc.setText(descShrink);
+        holder.dateTime.setText(String.valueOf(notes[position].dateTime));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,14 +62,16 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
                 Bundle bundle=new Bundle();
                 String headingTxt=notes[i].heading;
                 String descTxt=notes[i].desc;
+                String dateTime=notes[i].dateTime;
                 int id= (int) notes[i].id;
                 bundle.putInt("Id",id);
                 bundle.putString("Heading",headingTxt);
                 bundle.putString("Content",descTxt);
-                Intent intent=new Intent(context,updatingActivity.class);
+                bundle.putString("dateTime",dateTime);
+                Intent intent=new Intent(context,viewNote.class);
                 intent.putExtras(bundle);
                 Bundle b= ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle();
-                context.startActivity(intent);
+                context.startActivity(intent,b);
             }
         });
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -108,12 +111,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder{
-        private TextView Heading,Desc;
+        private TextView Heading,Desc,dateTime;
         private DBHelper DB;
         public ItemViewHolder(@NonNull View v){
             super(v);
             Heading=v.findViewById(R.id.heading);
             Desc=v.findViewById(R.id.desc);
+            dateTime=v.findViewById(R.id.dateTime);
         }
     }
 }
